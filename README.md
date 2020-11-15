@@ -1,8 +1,35 @@
 # rea-toy-robot
 
-SPEC
-===============
-- [ ] Misc
+## Requisites
+* Stack (Haskell build tool )
+https://docs.haskellstack.org/en/stable/install_and_upgrade/
+
+
+## Building
+```
+stack build
+```
+
+## Testing
+```
+stack test
+```
+
+
+## Running
+```
+stack run
+```
+
+or
+
+```
+cat test/exampleA | stack exec rea-toy-robot-exe
+```
+
+
+## SPEC
+- [x] Misc
   - [X] The application must be a command line application.
   - [X] Input can be from a file, or from standard input, as the developer chooses.
      - going for stdin, can always `cat $FILE | thisProgram` anyway
