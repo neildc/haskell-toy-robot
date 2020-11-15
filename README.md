@@ -23,13 +23,14 @@ SPEC
      - [x] The toy robot must not fall off the table during movement. This also includes the initial placement of the toy robot.
        this is done during parsing
 
-   - [ ] MOVE
-     - [ ] MOVE will move the toy robot one unit forward in the direction it is
-     - [ ] Any move that would cause the robot to fall must be ignored.
+   - [x] MOVE
+     - [x] MOVE will move the toy robot one unit forward in the direction it is
+     - [x] Any move that would cause the robot to fall must be ignored.
 
    - [x] LEFT/RIGHT
      - LEFT and RIGHT will rotate the robot 90 degrees in the specified direction
         without changing the position of the robot.
+
    - [ ] REPORT
      - REPORT will announce the X,Y and F of the robot. This can be in any form,
         but standard output is sufficient.

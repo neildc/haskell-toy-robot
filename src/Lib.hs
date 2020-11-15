@@ -39,7 +39,7 @@ update command currState =
       ( newPosition, newDirection )
 
     Move ->
-      undefined
+      (moveIfRobotWontFall currState, currDirection)
 
     RotateLeft ->
       ( currPosition
@@ -61,6 +61,41 @@ update command currState =
 
     Report ->
       undefined
+
+
+moveIfRobotWontFall :: State -> Position
+moveIfRobotWontFall (currPosition, currDirection) =
+  let
+      (willFall, newPosition) =
+        case currDirection of
+          North ->
+            ( y == (boardHeight - 1)
+            , (x, y + 1)
+            )
+
+          South ->
+            ( y == 0
+            , (x, y - 1)
+            )
+
+          East ->
+            ( x == (boardWidth - 1)
+            , (x + 1, y)
+            )
+
+          West ->
+            ( x == 0
+            , (x - 1, y)
+            )
+
+      ( x, y ) =
+        currPosition
+  in
+  if willFall then
+    currPosition
+
+  else
+    newPosition
 
 parse :: String -> Maybe Command
 parse input =
