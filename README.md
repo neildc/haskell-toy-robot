@@ -13,6 +13,8 @@ stack build
 ## Testing
 ```
 stack test
+
+./e2e.sh
 ```
 
 
@@ -24,7 +26,7 @@ stack run
 or
 
 ```
-cat test/exampleA | stack exec rea-toy-robot-exe
+cat $FILE | stack exec rea-toy-robot-exe
 ```
 
 
