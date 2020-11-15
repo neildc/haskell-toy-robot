@@ -1,13 +1,19 @@
 module Main where
 
 import           Control.Monad as Monad (when)
+import qualified System.IO
 import qualified Lib
 
 debug :: Bool
-debug = True -- TODO disable before final
+debug = False -- TODO disable before final
 
 main :: IO ()
 main = do
+  isEOF <- System.IO.isEOF
+  if isEOF then
+    return ()
+
+  else do
     line <- getLine
 
     -- The first valid command to the robot is a PLACE command, after that, any
@@ -25,6 +31,11 @@ main = do
 
 loop :: Lib.State -> IO ()
 loop currState = do
+  isEOF <- System.IO.isEOF
+  if isEOF then
+    return ()
+
+  else do
     line <- getLine
 
     if line == "REPORT" then
