@@ -26,7 +26,7 @@ SPEC
      - [ ] MOVE will move the toy robot one unit forward in the direction it is
      - [ ] Any move that would cause the robot to fall must be ignored.
 
-   - [ ] LEFT/RIGHT
+   - [x] LEFT/RIGHT
      - LEFT and RIGHT will rotate the robot 90 degrees in the specified direction
         without changing the position of the robot.
    - [ ] REPORT
