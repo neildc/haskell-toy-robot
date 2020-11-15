@@ -7,6 +7,10 @@ import qualified Lib
 debug :: Bool
 debug = False -- TODO disable before final
 
+debugLog :: String -> IO ()
+debugLog =
+  when debug . putStrLn
+
 main :: IO ()
 main = do
   isEOF <- System.IO.isEOF
@@ -26,7 +30,7 @@ main = do
 
       Left err ->
           do
-            when debug $ putStrLn err
+            debugLog err
             main
 
 loop :: Lib.State -> IO ()
@@ -50,11 +54,11 @@ loop currState = do
             updatedState = Lib.update command currState
           in
           do
-            when debug $ putStrLn $ "Parsed command => " ++ show command
-            when debug $ putStrLn $ "old state: " ++ show currState
-            when debug $ putStrLn $ "new state: " ++ show updatedState
+            debugLog $ "Parsed command => " ++ show command
+            debugLog $ "old state: " ++ show currState
+            debugLog $ "new state: " ++ show updatedState
             loop updatedState
         Left err -> do
-          when debug $ putStrLn $ "Failed to parse => " ++ line
-          when debug $ putStrLn err
+          debugLog $ "Failed to parse => " ++ line
+          debugLog err
           loop currState
