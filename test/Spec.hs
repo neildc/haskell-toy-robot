@@ -41,5 +41,26 @@ main = hspec $ do
     it "Can spin around left" $ do
       parseAndRun (List.replicate 4 "LEFT") (stateAtOrigin Lib.East) `shouldBe` stateAtOrigin Lib.East
 
+    it "Ignores invalid place command (invalid coordinate)" $ do
+      parseAndRunOriginN  ["PLACE a,2,EAST"] `shouldBe` stateAtOrigin Lib.North
+
+    it "Ignores invalid place command (missing direction)" $ do
+      parseAndRunOriginN  ["PLACE 0,2"] `shouldBe` stateAtOrigin Lib.North
+
+    it "Ignores invalid place command (invalid direction)" $ do
+      parseAndRunOriginN  ["PLACE 0,2,CAT"] `shouldBe` stateAtOrigin Lib.North
+
+    it "Ignores invalid place command (invalid format)" $ do
+      parseAndRunOriginN  ["PLACE 02NORTH"] `shouldBe` stateAtOrigin Lib.North
+
     it "Can be placed" $ do
       parseAndRunOriginN  ["PLACE 2,2,EAST"] `shouldBe` ((2,2), Lib.East)
+
+    it "Can be placed" $ do
+      parseAndRunOriginN  ["PLACE 4,2,NORTH"] `shouldBe` ((4,2), Lib.North)
+
+    it "Can't be placed out of bounds" $ do
+      parseAndRunOriginN ["PLACE 7,7,EAST"] `shouldBe` ((0,0), Lib.East)
+
+    it "Can't be placed out of bounds" $ do
+      parseAndRunOriginN ["PLACE 0,0,EAST", "PLACE 7,7,EAST"] `shouldBe` ((0,0), Lib.East)
