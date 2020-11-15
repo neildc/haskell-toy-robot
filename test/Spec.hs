@@ -2,6 +2,7 @@ import qualified Data.Maybe as Maybe
 import           Lib
 import           Test.Hspec
 import Data.Function
+import qualified Data.List as List
 
 stateAtOrigin :: Lib.Direction -> State
 stateAtOrigin direction =
@@ -30,6 +31,12 @@ main = hspec $ do
 
     it "Can be rotated right" $ do
       parseAndRun ["RIGHT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.East
+
+    it "Can spin around right" $ do
+      parseAndRun (List.replicate 4 "RIGHT")  (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.North
+
+    it "Can spin around left" $ do
+      parseAndRun (List.replicate 4 "LEFT")  (stateAtOrigin Lib.East) `shouldBe` stateAtOrigin Lib.East
 
     it "Can be placed" $ do
       parseAndRun ["PLACE 2,2,NORTH"] (stateAtOrigin Lib.North) `shouldBe` ((2,2), Lib.North)

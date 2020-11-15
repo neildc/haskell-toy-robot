@@ -26,7 +26,37 @@ data Command
 
 update :: Command -> State -> State
 update command currState =
-  currState
+  let
+    (currPosition, currDirection) =
+      currState
+  in
+  case command of
+    Place position direction ->
+      undefined
+
+    Move ->
+      undefined
+
+    RotateLeft ->
+      ( currPosition
+      , case currDirection of
+        North -> West
+        East  -> North
+        South -> East
+        West  -> South
+      )
+
+    RotateRight ->
+      ( currPosition
+      , case currDirection of
+        North -> East
+        East  -> South
+        South -> West
+        West  -> North
+      )
+
+    Report ->
+      undefined
 
 parse :: String -> Maybe Command
 parse input =
