@@ -10,11 +10,11 @@ SPEC
   of dimensions 5 units x 5 units.
      - Hard coding the 5 x 5 units in `Lib.boardHeight/Width` constants for now.
 
-- [ ] User Input
-  - [ ] The first valid command to the robot is a PLACE command, 
-  - [ ] after that, any sequence of commands may be issued, in any order, including another PLACE command. 
-  - [ ] The application should discard all commands in the sequence until a valid PLACE command has been executed.
-    - [ ] A robot that is not on the table can choose the ignore the MOVE, LEFT, RIGHT
+- [x] User Input
+  - [x] The first valid command to the robot is a PLACE command, 
+  - [x] after that, any sequence of commands may be issued, in any order, including another PLACE command. 
+  - [x] The application should discard all commands in the sequence until a valid PLACE command has been executed.
+    - [x] A robot that is not on the table can choose the ignore the MOVE, LEFT, RIGHT
 
 - [x] Update
    - [x] PLACE X,Y,F

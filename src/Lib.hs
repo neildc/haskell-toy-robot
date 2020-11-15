@@ -1,6 +1,6 @@
 module Lib
     ( State, Direction(..)
-    , update, parse, printState
+    , update, parse, printState, getStateIfPlaceCommand
     , boardHeight, boardWidth
     ) where
 
@@ -34,6 +34,10 @@ data Command
   | RotateLeft
   | RotateRight
   deriving (Show)
+
+getStateIfPlaceCommand :: Command -> Maybe State
+getStateIfPlaceCommand (Place pos dir) = Just (pos, dir)
+getStateIfPlaceCommand _               = Nothing
 
 -- Keeping "REPORT" out of Lib.hs to keep the
 -- update function pure, so it can be used in the test runner

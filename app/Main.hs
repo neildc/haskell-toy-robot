@@ -1,13 +1,25 @@
 module Main where
 
+import           Control.Monad as Monad (when)
 import qualified Lib
-import Control.Monad as Monad (when)
 
 debug :: Bool
 debug = True -- TODO disable before final
 
 main :: IO ()
-main = loop ((0,0), Lib.North)
+main = do
+    line <- getLine
+
+    -- The first valid command to the robot is a PLACE command, after that, any
+    -- sequence of commands may be issued, in any order, including another PLACE
+    -- command. The application should discard all commands in the sequence until
+    -- a valid PLACE command has been executed.
+    case (Lib.parse line >>= Lib.getStateIfPlaceCommand) of
+      Just initialState ->
+          loop initialState
+
+      Nothing ->
+          main
 
 loop :: Lib.State -> IO ()
 loop currState = do
