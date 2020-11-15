@@ -17,11 +17,12 @@ SPEC
     - [ ] A robot that is not on the table can choose the ignore the MOVE, LEFT, RIGHT
 
 - [ ] Update
-    includes the initial placement of the toy robot.
-   - [ ] PLACE X,Y,F
+   - [x] PLACE X,Y,F
      - [x] PLACE will put the toy robot on the table in position X,Y and facing NORTH,
         SOUTH, EAST or WEST.
-     - [ ] The toy robot must not fall off the table during movement. This also
+     - [x] The toy robot must not fall off the table during movement. This also includes the initial placement of the toy robot.
+       this is done during parsing
+
    - [ ] MOVE
      - [ ] MOVE will move the toy robot one unit forward in the direction it is
      - [ ] Any move that would cause the robot to fall must be ignored.

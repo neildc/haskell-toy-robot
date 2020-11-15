@@ -6,6 +6,7 @@ module Lib
 
 import qualified Text.Ascii    as Ascii
 import qualified Data.List as List
+import qualified Data.Ix
 
 boardHeight :: Int
 boardHeight = 5
@@ -78,8 +79,8 @@ parse input =
   where
     parsePlaceArgs :: Char -> Char -> String -> Maybe Command
     parsePlaceArgs x y direction =
-      case ( Ascii.fromDecDigit x
-           , Ascii.fromDecDigit y
+      case ( Ascii.fromDecDigit x >>= isInValidRange (0, boardWidth - 1)
+           , Ascii.fromDecDigit y >>= isInValidRange (0, boardHeight - 1)
            , parseDirection direction
            ) of
         (Just parsedX, Just parsedY, Just parsedDir) ->
@@ -95,3 +96,10 @@ parse input =
         "SOUTH" -> Just South
         "WEST"  -> Just West
         _       -> Nothing
+
+    isInValidRange :: (Int, Int) -> Int -> Maybe Int
+    isInValidRange bounds value =
+      if Data.Ix.inRange bounds value then
+        Just value
+      else
+        Nothing

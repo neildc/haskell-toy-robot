@@ -60,7 +60,7 @@ main = hspec $ do
       parseAndRunOriginN  ["PLACE 4,2,NORTH"] `shouldBe` ((4,2), Lib.North)
 
     it "Can't be placed out of bounds" $ do
-      parseAndRunOriginN ["PLACE 7,7,EAST"] `shouldBe` ((0,0), Lib.East)
+      parseAndRunOriginN ["PLACE 7,7,EAST"] `shouldBe` stateAtOrigin Lib.North
 
-    it "Can't be placed out of bounds" $ do
-      parseAndRunOriginN ["PLACE 0,0,EAST", "PLACE 7,7,EAST"] `shouldBe` ((0,0), Lib.East)
+    it "Can't be placed out of bounds, after being placed somewhere valid" $ do
+      parseAndRunOriginN ["PLACE 2,2,WEST", "PLACE 7,7,EAST"] `shouldBe` ((2,2), Lib.West)
