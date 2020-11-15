@@ -66,4 +66,5 @@ parse input =
     "MOVE" -> Just Move
     "Report" -> Just Report
     _ ->
-      undefined
+      -- TODO parse PLACE X,Y,[NORTH | EAST | SOUTH | WEST]
+      Nothing
