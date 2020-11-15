@@ -1,6 +1,6 @@
 module Lib
     ( State, Direction(..)
-    , update, parse
+    , update, parse, printState
     , boardHeight, boardWidth
     ) where
 
@@ -16,6 +16,14 @@ boardWidth = 5
 
 type State = (Position, Direction)
 
+printState :: State -> String
+printState ((x,y),dir) =
+  List.intercalate ","
+    [ show x
+    , show y
+    , map Ascii.toUpper $ show dir
+    ]
+
 type Position = (Int, Int)
 
 data Direction = North | East | South | West deriving (Show, Eq)
@@ -25,9 +33,10 @@ data Command
   | Move
   | RotateLeft
   | RotateRight
-  | Report
   deriving (Show)
 
+-- Keeping "REPORT" out of Lib.hs to keep the
+-- update function pure, so it can be used in the test runner
 update :: Command -> State -> State
 update command currState =
   let
@@ -58,10 +67,6 @@ update command currState =
         South -> West
         West  -> North
       )
-
-    Report ->
-      undefined
-
 
 moveIfRobotWontFall :: State -> Position
 moveIfRobotWontFall (currPosition, currDirection) =
@@ -103,7 +108,6 @@ parse input =
     "LEFT" -> Just RotateLeft
     "RIGHT" -> Just RotateRight
     "MOVE" -> Just Move
-    "REPORT" -> Just Report
     _ ->
         case List.stripPrefix "PLACE " input of
           Just (x:',':y:',':direction) ->

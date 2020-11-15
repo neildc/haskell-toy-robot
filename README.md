@@ -16,7 +16,7 @@ SPEC
   - [ ] The application should discard all commands in the sequence until a valid PLACE command has been executed.
     - [ ] A robot that is not on the table can choose the ignore the MOVE, LEFT, RIGHT
 
-- [ ] Update
+- [x] Update
    - [x] PLACE X,Y,F
      - [x] PLACE will put the toy robot on the table in position X,Y and facing NORTH,
         SOUTH, EAST or WEST.
@@ -31,7 +31,7 @@ SPEC
      - LEFT and RIGHT will rotate the robot 90 degrees in the specified direction
         without changing the position of the robot.
 
-   - [ ] REPORT
+   - [x] REPORT
      - REPORT will announce the X,Y and F of the robot. This can be in any form,
         but standard output is sufficient.
 
