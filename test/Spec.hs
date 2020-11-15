@@ -1,8 +1,8 @@
-import qualified Data.Maybe as Maybe
+import           Data.Function
+import qualified Data.List     as List
+import qualified Data.Maybe    as Maybe
 import           Lib
 import           Test.Hspec
-import Data.Function
-import qualified Data.List as List
 
 stateAtOrigin :: Lib.Direction -> State
 stateAtOrigin direction =
@@ -22,21 +22,24 @@ parseAndRun inputs initialState =
     inputsParsed =
       inputs & map Lib.parse & Maybe.catMaybes
 
+parseAndRunOriginN :: [String] -> Lib.State
+parseAndRunOriginN inputs =
+  parseAndRun inputs $ stateAtOrigin Lib.North
 
 main :: IO ()
 main = hspec $ do
   describe "Tests" $ do
     it "Can be rotated left" $ do
-      parseAndRun ["LEFT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.West
+      parseAndRunOriginN ["LEFT"] `shouldBe` stateAtOrigin Lib.West
 
     it "Can be rotated right" $ do
-      parseAndRun ["RIGHT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.East
+      parseAndRunOriginN ["RIGHT"] `shouldBe` stateAtOrigin Lib.East
 
     it "Can spin around right" $ do
-      parseAndRun (List.replicate 4 "RIGHT")  (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.North
+      parseAndRunOriginN (List.replicate 4 "RIGHT") `shouldBe` stateAtOrigin Lib.North
 
     it "Can spin around left" $ do
-      parseAndRun (List.replicate 4 "LEFT")  (stateAtOrigin Lib.East) `shouldBe` stateAtOrigin Lib.East
+      parseAndRun (List.replicate 4 "LEFT") (stateAtOrigin Lib.East) `shouldBe` stateAtOrigin Lib.East
 
     it "Can be placed" $ do
-      parseAndRun ["PLACE 2,2,NORTH"] (stateAtOrigin Lib.North) `shouldBe` ((2,2), Lib.North)
+      parseAndRunOriginN  ["PLACE 2,2,EAST"] `shouldBe` ((2,2), Lib.East)
