@@ -1,23 +1,38 @@
 #/bin/bash
 
+# test file format
+
+# EXPECTED OUTPUT
+# <BLANK LINE>
+# Command 1
+# Command 2
+# Command 3
+# ...
+# Command N
+
 stack build
 
 RUN="stack exec rea-toy-robot-exe"
 
 function test {
+    EXPECTED=`head -n1 $1`
+
+    # read from the 3rd line onwards
+    COMMANDS="tail -n +3 $1"
+
     echo "> testing with $1"
 
-    if cat $1 | $RUN | grep -q $2; then
+    if $COMMANDS | $RUN | grep -q $EXPECTED; then
         echo "   Passed"
     else
         echo "   Failed"
-        echo "   expected: $2"
-        echo "     actual: `cat $1 | $RUN`"
+        echo "   expected: $EXPECTED"
+        echo "     actual: `$COMMANDS | $RUN`"
     fi
     echo ""
 }
 
-test test/exampleA '0,1,NORTH'
-test test/exampleB '0,0,WEST'
-test test/exampleC '3,3,NORTH'
-test test/firstCommandMustBeValidPlace '2,3,NORTH'
+for file in ./test/e2e/*
+do
+    test "$file"
+done

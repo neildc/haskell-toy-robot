@@ -11,10 +11,26 @@ stack build
 ```
 
 ## Testing
+
+#### Unit tests
 ```
 stack test
+```
 
-./e2e.sh
+#### End to end tests
+There are also e2e tests in the `test/e2e` folder. 
+
+These can be ran with the test runner script `e2e.sh`
+
+#### e2e test file format
+```
+EXPECTED OUTPUT
+<BLANK LINE>
+Command 1
+Command 2
+Command 3
+...
+Command N
 ```
 
 
