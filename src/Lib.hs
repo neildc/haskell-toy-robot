@@ -7,6 +7,7 @@ module Lib
 import qualified Text.Ascii    as Ascii
 import qualified Data.List as List
 import qualified Data.Ix
+import qualified Control.Applicative
 
 boardHeight :: Int
 boardHeight = 5
@@ -113,23 +114,26 @@ parse input =
     "RIGHT" -> Just RotateRight
     "MOVE" -> Just Move
     _ ->
-        case List.stripPrefix "PLACE " input of
-          Just (x:',':y:',':direction) ->
-            parsePlaceArgs x y direction
+        List.stripPrefix "PLACE " input
+          >>= splitPlaceArgsOnComma
+          >>= parsePlaceArgs
+  where
+    splitPlaceArgsOnComma :: String -> Maybe (Char, Char, String)
+    splitPlaceArgsOnComma input =
+      case input of
+          (x:',':y:',':direction) ->
+            Just (x, y, direction)
 
           _ ->
             Nothing
-  where
-    parsePlaceArgs :: Char -> Char -> String -> Maybe Command
-    parsePlaceArgs x y direction =
-      case ( Ascii.fromDecDigit x >>= isInValidRange (0, boardWidth - 1)
-           , Ascii.fromDecDigit y >>= isInValidRange (0, boardHeight - 1)
-           , parseDirection direction
-           ) of
-        (Just parsedX, Just parsedY, Just parsedDir) ->
-          Just $ Place (parsedX, parsedY) parsedDir
-        _ ->
-          Nothing
+
+    parsePlaceArgs :: (Char, Char, String) -> Maybe Command
+    parsePlaceArgs (x, y, direction) =
+      Control.Applicative.liftA3
+          ( \validX validY validDir -> Place (validX, validY) validDir)
+          ( Ascii.fromDecDigit x >>= isInValidRange (0, boardWidth - 1))
+          ( Ascii.fromDecDigit y >>= isInValidRange (0, boardHeight - 1))
+          ( parseDirection direction)
 
     parseDirection :: String -> Maybe Direction
     parseDirection input =
