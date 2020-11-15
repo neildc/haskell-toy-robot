@@ -30,4 +30,10 @@ update command currState =
 
 parse :: String -> Maybe Command
 parse input =
-  undefined
+  case input of
+    "LEFT" -> Just RotateLeft
+    "RIGHT" -> Just RotateRight
+    "MOVE" -> Just Move
+    "Report" -> Just Report
+    _ ->
+      undefined
