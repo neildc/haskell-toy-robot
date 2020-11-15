@@ -4,6 +4,9 @@ module Lib
     , boardHeight, boardWidth
     ) where
 
+import qualified Text.Ascii    as Ascii
+import qualified Data.List as List
+
 boardHeight :: Int
 boardHeight = 5
 
@@ -31,8 +34,8 @@ update command currState =
       currState
   in
   case command of
-    Place position direction ->
-      undefined
+    Place newPosition newDirection ->
+      ( newPosition, newDirection )
 
     Move ->
       undefined
@@ -64,7 +67,31 @@ parse input =
     "LEFT" -> Just RotateLeft
     "RIGHT" -> Just RotateRight
     "MOVE" -> Just Move
-    "Report" -> Just Report
+    "REPORT" -> Just Report
     _ ->
-      -- TODO parse PLACE X,Y,[NORTH | EAST | SOUTH | WEST]
-      Nothing
+        case List.stripPrefix "PLACE " input of
+          Just (x:',':y:',':direction) ->
+            parsePlaceArgs x y direction
+
+          _ ->
+            Nothing
+  where
+    parsePlaceArgs :: Char -> Char -> String -> Maybe Command
+    parsePlaceArgs x y direction =
+      case ( Ascii.fromDecDigit x
+           , Ascii.fromDecDigit y
+           , parseDirection direction
+           ) of
+        (Just parsedX, Just parsedY, Just parsedDir) ->
+          Just $ Place (parsedX, parsedY) parsedDir
+        _ ->
+          Nothing
+
+    parseDirection :: String -> Maybe Direction
+    parseDirection input =
+      case input of
+        "NORTH" -> Just North
+        "EAST"  -> Just East
+        "SOUTH" -> Just South
+        "WEST"  -> Just West
+        _       -> Nothing

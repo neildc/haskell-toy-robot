@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b37a757d9c874014824d8be090d2496cbc475ba6f270f325b999cb1cdf1da294
+-- hash: b2967265223313be54aa447045bdd1cf856bcabff6dd862ab0e8c52f86ddc60f
 
 name:           rea-toy-robot
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , text-latin1
   default-language: Haskell2010
 
 executable rea-toy-robot-exe
@@ -45,6 +46,7 @@ executable rea-toy-robot-exe
   build-depends:
       base >=4.7 && <5
     , rea-toy-robot
+    , text-latin1
   default-language: Haskell2010
 
 test-suite rea-toy-robot-test
@@ -59,4 +61,5 @@ test-suite rea-toy-robot-test
       base >=4.7 && <5
     , hspec
     , rea-toy-robot
+    , text-latin1
   default-language: Haskell2010
