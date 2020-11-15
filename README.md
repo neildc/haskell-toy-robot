@@ -6,11 +6,11 @@ SPEC
   - [X] The application must be a command line application.
   - [X] Input can be from a file, or from standard input, as the developer chooses.
      - going for stdin, can always `cat $FILE | thisProgram` anyway
-  -  [ ] The application is a simulation of a toy robot moving on a square tabletop,
+  -  [x] The application is a simulation of a toy robot moving on a square tabletop,
   of dimensions 5 units x 5 units.
+     - Hard coding the 5 x 5 units in `Lib.boardHeight/Width` constants for now.
 
 - [ ] User Input
-
   - [ ] The first valid command to the robot is a PLACE command, 
   - [ ] after that, any sequence of commands may be issued, in any order, including another PLACE command. 
   - [ ] The application should discard all commands in the sequence until a valid PLACE command has been executed.
