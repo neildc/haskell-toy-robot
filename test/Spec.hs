@@ -26,10 +26,10 @@ main :: IO ()
 main = hspec $ do
   describe "Tests" $ do
     it "Can be rotated left" $ do
-      parseAndRun ["LEFT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.East
+      parseAndRun ["LEFT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.West
 
     it "Can be rotated right" $ do
-      parseAndRun ["RIGHT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.West
+      parseAndRun ["RIGHT"] (stateAtOrigin Lib.North) `shouldBe` stateAtOrigin Lib.East
 
     it "Can be placed" $ do
       parseAndRun ["PLACE 2,2,NORTH"] (stateAtOrigin Lib.North) `shouldBe` ((2,2), Lib.North)
