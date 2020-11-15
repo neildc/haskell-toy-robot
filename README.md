@@ -3,8 +3,9 @@
 SPEC
 ===============
 - [ ] Misc
-  - [ ] The application must be a command line application.
-  - [ ] Input can be from a file, or from standard input, as the developer chooses.
+  - [X] The application must be a command line application.
+  - [X] Input can be from a file, or from standard input, as the developer chooses.
+     - going for stdin, can always `cat $FILE | thisProgram` anyway
   -  [ ] The application is a simulation of a toy robot moving on a square tabletop,
   of dimensions 5 units x 5 units.
 

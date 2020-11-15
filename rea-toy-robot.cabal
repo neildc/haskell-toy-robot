@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 158c095cc0cce9f59b4a6ff8281196426f05ccf437fc1f1c8762522c2b59e584
+-- hash: 1be057565101e19ca1076dbd643ef01f84d69531e7dc9ec8559d12c38c1587e5
 
 name:           rea-toy-robot
 version:        0.1.0.0
@@ -19,7 +19,6 @@ license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
