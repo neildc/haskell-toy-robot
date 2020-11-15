@@ -15,11 +15,13 @@ main = do
     -- command. The application should discard all commands in the sequence until
     -- a valid PLACE command has been executed.
     case (Lib.parse line >>= Lib.getStateIfPlaceCommand) of
-      Just initialState ->
+      Right initialState ->
           loop initialState
 
-      Nothing ->
-          main
+      Left err ->
+          do
+            when debug $ putStrLn err
+            main
 
 loop :: Lib.State -> IO ()
 loop currState = do
@@ -32,7 +34,7 @@ loop currState = do
 
     else
       case Lib.parse line of
-        Just command ->
+        Right command ->
           let
             updatedState = Lib.update command currState
           in
@@ -41,6 +43,7 @@ loop currState = do
             when debug $ putStrLn $ "old state: " ++ show currState
             when debug $ putStrLn $ "new state: " ++ show updatedState
             loop updatedState
-        Nothing -> do
+        Left err -> do
           when debug $ putStrLn $ "Failed to parse => " ++ line
+          when debug $ putStrLn err
           loop currState

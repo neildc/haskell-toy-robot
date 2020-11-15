@@ -1,6 +1,6 @@
 import           Data.Function
 import qualified Data.List     as List
-import qualified Data.Maybe    as Maybe
+import qualified Data.Either    as Either
 import           Lib
 import           Test.Hspec
 
@@ -20,7 +20,7 @@ parseAndRun initialState inputs  =
       inputsParsed
   where
     inputsParsed =
-      inputs & map Lib.parse & Maybe.catMaybes
+      inputs & map Lib.parse & Either.rights
 
 parseAndRunOriginN :: [String] -> Lib.State
 parseAndRunOriginN  =

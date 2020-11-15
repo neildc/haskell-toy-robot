@@ -36,9 +36,9 @@ data Command
   | RotateRight
   deriving (Show)
 
-getStateIfPlaceCommand :: Command -> Maybe State
-getStateIfPlaceCommand (Place pos dir) = Just (pos, dir)
-getStateIfPlaceCommand _               = Nothing
+getStateIfPlaceCommand :: Command -> Either String State
+getStateIfPlaceCommand (Place pos dir) = Right (pos, dir)
+getStateIfPlaceCommand _               = Left "getStateIfPlaceCommand: expected PLACE command"
 
 -- Keeping "REPORT" out of Lib.hs to keep the
 -- update function pure, so it can be used in the test runner
@@ -107,46 +107,58 @@ moveIfRobotWontFall (currPosition, currDirection) =
   else
     newPosition
 
-parse :: String -> Maybe Command
+parse :: String -> Either String Command
 parse input =
   case input of
-    "LEFT" -> Just RotateLeft
-    "RIGHT" -> Just RotateRight
-    "MOVE" -> Just Move
+    "LEFT" -> Right RotateLeft
+    "RIGHT" -> Right RotateRight
+    "MOVE" -> Right Move
     _ ->
-        List.stripPrefix "PLACE " input
-          >>= splitPlaceArgsOnComma
-          >>= parsePlaceArgs
+      case List.stripPrefix "PLACE " input of
+        Nothing ->
+          Left $ errorStr "attempted to parse unknown command"
+        Just placeArgs ->
+          splitPlaceArgsOnComma placeArgs
+            >>= parsePlaceArgs
   where
-    splitPlaceArgsOnComma :: String -> Maybe (Char, Char, String)
+    errorStr desc =
+      "parse: " ++ desc ++ " => \"" ++ input ++ "\""
+
+    splitPlaceArgsOnComma :: String -> Either String (Char, Char, String)
     splitPlaceArgsOnComma input =
       case input of
           (x:',':y:',':direction) ->
-            Just (x, y, direction)
+            Right (x, y, direction)
 
           _ ->
-            Nothing
+            Left $ errorStr "Failed splitting PLACE args"
 
-    parsePlaceArgs :: (Char, Char, String) -> Maybe Command
+    parsePlaceArgs :: (Char, Char, String) -> Either String Command
     parsePlaceArgs (x, y, direction) =
       Control.Applicative.liftA3
           ( \validX validY validDir -> Place (validX, validY) validDir)
-          ( Ascii.fromDecDigit x >>= isInValidRange (0, boardWidth - 1))
-          ( Ascii.fromDecDigit y >>= isInValidRange (0, boardHeight - 1))
+          ( parseDigit x >>= isInValidRange (0, boardWidth - 1))
+          ( parseDigit y >>= isInValidRange (0, boardHeight - 1))
           ( parseDirection direction)
 
-    parseDirection :: String -> Maybe Direction
+    parseDirection :: String -> Either String Direction
     parseDirection input =
       case input of
-        "NORTH" -> Just North
-        "EAST"  -> Just East
-        "SOUTH" -> Just South
-        "WEST"  -> Just West
-        _       -> Nothing
+        "NORTH" -> Right North
+        "EAST"  -> Right East
+        "SOUTH" -> Right South
+        "WEST"  -> Right West
+        _       -> Left $ errorStr "attempted to parse invalid direction arg"
 
-    isInValidRange :: (Int, Int) -> Int -> Maybe Int
+    parseDigit :: Char -> Either String Int
+    parseDigit digit =
+      case Ascii.fromDecDigit digit of
+        Just d -> Right d
+        Nothing -> Left $ errorStr "attempted to parse non digit coordinate"
+
+    isInValidRange :: (Int, Int) -> Int -> Either String Int
     isInValidRange bounds value =
       if Data.Ix.inRange bounds value then
-        Just value
+        Right value
       else
-        Nothing
+        Left $ errorStr "PLACE coordinate was out of bounds"
