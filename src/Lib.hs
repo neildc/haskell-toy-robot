@@ -1,6 +1,6 @@
 module Lib
     ( State, Direction(..)
-    , update, parse, printState, getStateIfPlaceCommand
+    , update, parse, stateToString, getStateIfPlaceCommand
     , boardHeight, boardWidth
     ) where
 
@@ -17,8 +17,8 @@ boardWidth = 5
 
 type State = (Position, Direction)
 
-printState :: State -> String
-printState ((x,y),dir) =
+stateToString :: State -> String
+stateToString ((x,y),dir) =
   List.intercalate ","
     [ show x
     , show y

@@ -5,7 +5,7 @@ import qualified System.IO
 import qualified Lib
 
 debug :: Bool
-debug = False -- TODO disable before final
+debug = False
 
 debugLog :: String -> IO ()
 debugLog =
@@ -28,10 +28,9 @@ main = do
       Right initialState ->
           loop initialState
 
-      Left err ->
-          do
-            debugLog err
-            main
+      Left err -> do
+          debugLog err
+          main
 
 loop :: Lib.State -> IO ()
 loop currState = do
@@ -42,9 +41,9 @@ loop currState = do
   else do
     line <- getLine
 
-    if line == "REPORT" then
-      do
-        putStrLn $ Lib.printState currState
+    if line == "REPORT" then do
+        putStrLn $ Lib.stateToString currState
+
         loop currState
 
     else
@@ -52,12 +51,13 @@ loop currState = do
         Right command ->
           let
             updatedState = Lib.update command currState
-          in
-          do
-            debugLog $ "Parsed command => " ++ show command
-            debugLog $ "old state: " ++ show currState
-            debugLog $ "new state: " ++ show updatedState
-            loop updatedState
+          in do
+          debugLog $ "Parsed command => " ++ show command
+          debugLog $ "old state: " ++ show currState
+          debugLog $ "new state: " ++ show updatedState
+
+          loop updatedState
+
         Left err -> do
           debugLog $ "Failed to parse => " ++ line
           debugLog err

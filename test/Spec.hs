@@ -14,7 +14,7 @@ stateAtCornerOppositeOrigin direction =
 
 parseAndRun :: Lib.State -> [String] -> Lib.State
 parseAndRun initialState inputs  =
-  foldl
+  List.foldl'
       (flip Lib.update)
       initialState
       inputsParsed
