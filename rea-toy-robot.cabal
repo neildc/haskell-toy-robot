@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b2967265223313be54aa447045bdd1cf856bcabff6dd862ab0e8c52f86ddc60f
+-- hash: 4a5f0de2ceb6bdfba9d1cdbb957abb7d8f8cc1fee1773c2010ed7bab9902fe4a
 
 name:           rea-toy-robot
 version:        0.1.0.0
@@ -42,7 +42,7 @@ executable rea-toy-robot-exe
       Paths_rea_toy_robot
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall -Werror
   build-depends:
       base >=4.7 && <5
     , rea-toy-robot

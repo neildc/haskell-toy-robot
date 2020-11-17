@@ -125,8 +125,8 @@ parse input =
       "parse: " ++ desc ++ " => \"" ++ input ++ "\""
 
     splitPlaceArgsOnComma :: String -> Either String (Char, Char, String)
-    splitPlaceArgsOnComma input =
-      case input of
+    splitPlaceArgsOnComma argStr =
+      case argStr of
           (x:',':y:',':direction) ->
             Right (x, y, direction)
 
@@ -142,8 +142,8 @@ parse input =
           ( parseDirection direction)
 
     parseDirection :: String -> Either String Direction
-    parseDirection input =
-      case input of
+    parseDirection dirStr =
+      case dirStr of
         "NORTH" -> Right North
         "EAST"  -> Right East
         "SOUTH" -> Right South
