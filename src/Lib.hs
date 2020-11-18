@@ -131,7 +131,7 @@ placeObsIfNotFacingEdge (currPosition, currDirection, currObstacles) =
 
 
 moveIfRobotWontFall :: State -> Position
-moveIfRobotWontFall (currPosition, currDirection, _) =
+moveIfRobotWontFall (currPosition, currDirection, currObstacles) =
   let
       (willFall, newPosition) =
         case currDirection of
@@ -157,9 +157,12 @@ moveIfRobotWontFall (currPosition, currDirection, _) =
 
       ( x, y ) =
         currPosition
+
+      obsInFront =
+        List.elem newPosition currObstacles
   in
   -- TODO Check for obstacles
-  if willFall then
+  if willFall || obsInFront then
     currPosition
 
   else

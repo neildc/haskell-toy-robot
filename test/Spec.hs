@@ -90,7 +90,7 @@ main = hspec $ do
       parseAndRun ((0,0), Lib.South , []) ["MOVE"] `shouldBe` ((0,0), Lib.South, [])
 
     it "Place at origin, place object, try to move" $ do
-      parseAndRun ((0,0), Lib.East , []) ["PLACE_OBJECT", "MOVE" ] `shouldBe` ((0,0), Lib.South, [])
+      parseAndRun ((0,0), Lib.East , []) ["PLACE_OBJECT", "MOVE" ] `shouldBe` ((0,0), Lib.East, [(1,0)])
 
     it "Place at origin, place object" $ do
       parseAndRun ((0,0), Lib.East , []) ["PLACE_OBJECT"] `shouldBe` ((0,0), Lib.East, [(1,0)])

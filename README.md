@@ -80,11 +80,11 @@ cat $FILE | stack exec rea-toy-robot-exe
    - [x] REPORT
      - REPORT will announce the X,Y and F of the robot. This can be in any form,
         but standard output is sufficient.
-   - [] PLACE_OBJECT
+   - [x] PLACE_OBJECT
 
 
-    - [ ] When moving  should be prevented from bumping into previously placed objects on the tabletop surface. 
-    - [ ] PLACE_OBJECT should place an object in front of the current location
+    - [x] When moving  should be prevented from bumping into previously placed objects on the tabletop surface. 
+    - [x] PLACE_OBJECT should place an object in front of the current location
 For example if the toy robot is at location (0,0) and facing EAST, an object should be placed in location (1,0). 
 
 0 0 0 0 0 
