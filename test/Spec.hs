@@ -92,9 +92,12 @@ main = hspec $ do
     it "Place at origin, place object, try to move" $ do
       parseAndRun ((0,0), Lib.East , []) ["PLACE_OBJECT", "MOVE" ] `shouldBe` ((0,0), Lib.South, [])
 
+    it "Place at origin, place object" $ do
+      parseAndRun ((0,0), Lib.East , []) ["PLACE_OBJECT"] `shouldBe` ((0,0), Lib.East, [(1,0)])
+
     -- For example if the toy robot is at location (0,0) and facing EAST, an object should be placed in location (1,0).
     it "state has obstacle, try to move" $ do
-      parseAndRun ((0,0), Lib.East , [(1,0)]) ["MOVE" ] `shouldBe` ((0,0), Lib.South, [(1,0)])
+      parseAndRun ((0,0), Lib.East , [(1,0)]) ["MOVE" ] `shouldBe` ((0,0), Lib.East, [(1,0)])
 
     it "Can reach the opposite corner" $ do
         (\cmds -> parseAndRunOriginN cmds `shouldBe` (stateAtCornerOppositeOrigin Lib.East)) $

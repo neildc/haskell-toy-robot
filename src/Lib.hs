@@ -37,6 +37,7 @@ data Command
   | Move
   | RotateLeft
   | RotateRight
+  | PlaceObject
   deriving (Show)
 
 -- used to initialise the state
@@ -85,8 +86,52 @@ update command currState =
       , currObstacles
       )
 
+    PlaceObject ->
+      ( currPosition
+      , currDirection
+      , placeObsIfNotFacingEdge currState
+      )
+
+placeObsIfNotFacingEdge :: State -> [Position]
+placeObsIfNotFacingEdge (currPosition, currDirection, currObstacles) =
+  let
+      (facingEdge, newObs) =
+        case currDirection of
+          North ->
+            ( y == (boardHeight - 1)
+            , (x, y + 1)
+            )
+
+          South ->
+            ( y == 0
+            , (x, y - 1)
+            )
+
+          East ->
+            ( x == (boardWidth - 1)
+            , (x + 1, y)
+            )
+
+          West ->
+            ( x == 0
+            , (x - 1, y)
+            )
+      ( x, y ) =
+        currPosition
+  in
+  -- TODO Check for obstacles
+  if facingEdge then
+    currObstacles
+
+  else
+    if List.elem newObs currObstacles then
+      currObstacles
+    else
+      List.insert newObs currObstacles
+
+
 moveIfRobotWontFall :: State -> Position
-moveIfRobotWontFall (currPosition, currDirection, currObstacles) =
+moveIfRobotWontFall (currPosition, currDirection, _) =
   let
       (willFall, newPosition) =
         case currDirection of
@@ -126,6 +171,7 @@ parse input =
     "LEFT" -> Right RotateLeft
     "RIGHT" -> Right RotateRight
     "MOVE" -> Right Move
+    "PLACE_OBJECT" -> Right PlaceObject
     _ ->
       case List.stripPrefix "PLACE " input of
         Nothing ->
