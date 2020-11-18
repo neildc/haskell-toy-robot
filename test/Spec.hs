@@ -6,11 +6,11 @@ import           Test.Hspec
 
 stateAtOrigin :: Lib.Direction -> State
 stateAtOrigin direction =
-  ((0,0), direction)
+  ((0,0), direction, [])
 
 stateAtCornerOppositeOrigin :: Lib.Direction -> State
 stateAtCornerOppositeOrigin direction =
-  ((Lib.boardWidth - 1, Lib.boardHeight - 1), direction)
+  ((Lib.boardWidth - 1, Lib.boardHeight - 1), direction, [])
 
 parseAndRun :: Lib.State -> [String] -> Lib.State
 parseAndRun initialState inputs  =
@@ -54,40 +54,40 @@ main = hspec $ do
       parseAndRunOriginN  ["PLACE 02NORTH"] `shouldBe` stateAtOrigin Lib.North
 
     it "Can be placed" $ do
-      parseAndRunOriginN  ["PLACE 2,2,EAST"] `shouldBe` ((2,2), Lib.East)
+      parseAndRunOriginN  ["PLACE 2,2,EAST"] `shouldBe` ((2,2), Lib.East, [])
 
     it "Can be placed" $ do
-      parseAndRunOriginN  ["PLACE 4,2,NORTH"] `shouldBe` ((4,2), Lib.North)
+      parseAndRunOriginN  ["PLACE 4,2,NORTH"] `shouldBe` ((4,2), Lib.North, [])
 
     it "Can't be placed out of bounds" $ do
       parseAndRunOriginN ["PLACE 7,7,EAST"] `shouldBe` stateAtOrigin Lib.North
 
     it "Can't be placed out of bounds, after being placed somewhere valid" $ do
-      parseAndRunOriginN ["PLACE 2,2,WEST", "PLACE 7,7,EAST"] `shouldBe` ((2,2), Lib.West)
+      parseAndRunOriginN ["PLACE 2,2,WEST", "PLACE 7,7,EAST"] `shouldBe` ((2,2), Lib.West, [])
 
     it "Can slide east" $ do
-      parseAndRun ((0,0), Lib.East) ["MOVE"] `shouldBe` ((1,0), Lib.East)
+      parseAndRun ((0,0), Lib.East, []) ["MOVE"] `shouldBe` ((1,0), Lib.East, [])
 
     it "Can slide west" $ do
-      parseAndRun ((2,2), Lib.West) ["MOVE"] `shouldBe` ((1,2), Lib.West)
+      parseAndRun ((2,2), Lib.West, []) ["MOVE"] `shouldBe` ((1,2), Lib.West, [])
 
     it "Can slide north" $ do
-      parseAndRun ((2,2), Lib.North) ["MOVE"] `shouldBe` ((2,3), Lib.North)
+      parseAndRun ((2,2), Lib.North, []) ["MOVE"] `shouldBe` ((2,3), Lib.North, [])
 
     it "Can slide south" $ do
-      parseAndRun ((2,2), Lib.South) ["MOVE"] `shouldBe` ((2,1), Lib.South)
+      parseAndRun ((2,2), Lib.South, []) ["MOVE"] `shouldBe` ((2,1), Lib.South, [])
 
     it "Doesn't slide off west boundary" $ do
-      parseAndRun ((0,0), Lib.West) ["MOVE"] `shouldBe` ((0,0), Lib.West)
+      parseAndRun ((0,0), Lib.West, []) ["MOVE"] `shouldBe` ((0,0), Lib.West, [])
 
     it "Doesn't slide off east boundary" $ do
-      parseAndRun ((4,0), Lib.East) ["MOVE"] `shouldBe` ((4,0), Lib.East)
+      parseAndRun ((4,0), Lib.East , []) ["MOVE"] `shouldBe` ((4,0), Lib.East, [])
 
     it "Doesn't slide off north boundary" $ do
-      parseAndRun ((0,4), Lib.North) ["MOVE"] `shouldBe` ((0,4), Lib.North)
+      parseAndRun ((0,4), Lib.North , []) ["MOVE"] `shouldBe` ((0,4), Lib.North, [])
 
     it "Doesn't slide off south boundary" $ do
-      parseAndRun ((0,0), Lib.South) ["MOVE"] `shouldBe` ((0,0), Lib.South)
+      parseAndRun ((0,0), Lib.South , []) ["MOVE"] `shouldBe` ((0,0), Lib.South, [])
 
     it "Can reach the opposite corner" $ do
         (\cmds -> parseAndRunOriginN cmds `shouldBe` (stateAtCornerOppositeOrigin Lib.East)) $

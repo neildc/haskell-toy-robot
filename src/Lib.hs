@@ -15,10 +15,13 @@ boardHeight = 5
 boardWidth :: Int
 boardWidth = 5
 
-type State = (Position, Direction)
+type State = ( Position -- robot
+             , Direction -- robot direction
+             , [ Position ] -- obstacles on the board
+             )
 
 stateToString :: State -> String
-stateToString ((x,y),dir) =
+stateToString ((x,y),dir, _) =
   List.intercalate ","
     [ show x
     , show y
@@ -36,8 +39,9 @@ data Command
   | RotateRight
   deriving (Show)
 
+-- used to initialise the state
 getStateIfPlaceCommand :: Command -> Either String State
-getStateIfPlaceCommand (Place pos dir) = Right (pos, dir)
+getStateIfPlaceCommand (Place pos dir) = Right (pos, dir, [])
 getStateIfPlaceCommand _               = Left "getStateIfPlaceCommand: expected PLACE command"
 
 -- Keeping "REPORT" out of Lib.hs to keep the
@@ -45,15 +49,21 @@ getStateIfPlaceCommand _               = Left "getStateIfPlaceCommand: expected 
 update :: Command -> State -> State
 update command currState =
   let
-    (currPosition, currDirection) =
+    (currPosition, currDirection, currObstacles) =
       currState
   in
   case command of
     Place newPosition newDirection ->
-      ( newPosition, newDirection )
+
+      -- if placing on position where there is an obstacle
+      ----- overwrite obstacle
+      ----- ignore place command
+
+      -- For simplicty simply resetting obstacle state
+      ( newPosition, newDirection, [] )
 
     Move ->
-      (moveIfRobotWontFall currState, currDirection)
+      (moveIfRobotWontFall currState, currDirection, currObstacles)
 
     RotateLeft ->
       ( currPosition
@@ -62,6 +72,7 @@ update command currState =
         East  -> North
         South -> East
         West  -> South
+      , currObstacles
       )
 
     RotateRight ->
@@ -71,10 +82,11 @@ update command currState =
         East  -> South
         South -> West
         West  -> North
+      , currObstacles
       )
 
 moveIfRobotWontFall :: State -> Position
-moveIfRobotWontFall (currPosition, currDirection) =
+moveIfRobotWontFall (currPosition, currDirection, currObstacles) =
   let
       (willFall, newPosition) =
         case currDirection of
@@ -101,6 +113,7 @@ moveIfRobotWontFall (currPosition, currDirection) =
       ( x, y ) =
         currPosition
   in
+  -- TODO Check for obstacles
   if willFall then
     currPosition
 
@@ -139,8 +152,8 @@ parse input =
           ( \validX validY validDir -> Place (validX, validY) validDir)
           ( parseDigit x >>= isInValidRange (0, boardWidth - 1))
           ( parseDigit y >>= isInValidRange (0, boardHeight - 1))
-          ( parseDirection direction)
 
+          ( parseDirection direction)
     parseDirection :: String -> Either String Direction
     parseDirection dirStr =
       case dirStr of

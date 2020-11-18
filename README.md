@@ -58,7 +58,8 @@ cat $FILE | stack exec rea-toy-robot-exe
 - [x] User Input
   - [x] The first valid command to the robot is a PLACE command, 
   - [x] after that, any sequence of commands may be issued, in any order, including another PLACE command. 
-  - [x] The application should discard all commands in the sequence until a valid PLACE command has been executed.
+  - [x] The appl
+
     - [x] A robot that is not on the table can choose the ignore the MOVE, LEFT, RIGHT
 
 - [x] Update
@@ -79,4 +80,93 @@ cat $FILE | stack exec rea-toy-robot-exe
    - [x] REPORT
      - REPORT will announce the X,Y and F of the robot. This can be in any form,
         but standard output is sufficient.
+   - [] PLACE_OBJECT
+
+
+    - [ ] When moving  should be prevented from bumping into previously placed objects on the tabletop surface. 
+    - [ ] PLACE_OBJECT should place an object in front of the current location
+For example if the toy robot is at location (0,0) and facing EAST, an object should be placed in location (1,0). 
+
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+> 0 0 0 0 
+
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+> $ 0 0 0 
+
+Placing out of bounds?
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+V 0 0 0 0 
+
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+V 0 0 0 0 
+
+$ -> Obstacle
+0 -> table positions
+[<, >, v, ^] -> Robot
+
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+
+
+Extension 1: Obstacles
+Extend the Toy Robot with a PLACE_OBJECT command, to place an object on the tabletop surface.
+
+When moving the toy robot it should be prevented from bumping into previously placed objects on the tabletop surface. PLACE_OBJECT should place an object in front of the current location of the toy robot.
+
+For example if the toy robot is at location (0,0) and facing EAST, an object should be placed in location (1,0). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
